@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.volokh.danylo.example.HashTagHelperDemoActivity"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edit_text_field"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:textSize="@dimen/text_size"
+        android:hint="@string/enter_text_here"
+        android:layout_width="match_parent"
+        android:background="@null"
+        android:minHeight="@dimen/single_item_height"
+        android:layout_height="wrap_content">
+
+        <requestFocus />
+
+    </EditText>
+
+    <Button
+        android:id="@+id/get_entered_text_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_item_height"
+        android:text="@string/set_text"/>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:textSize="@dimen/text_size"
+        android:hint="@string/text_will_be_pasted_here"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/single_item_height"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/get_all_hashtags_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_item_height"
+        android:text="@string/get_all_hashtags"/>
+
+    <TextView
+        android:id="@+id/all_hashtags"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:textSize="@dimen/text_size"
+        android:layout_width="match_parent"
+        android:minHeight="@dimen/single_item_height"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

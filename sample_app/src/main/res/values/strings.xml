@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HashTagHelper</string>
+    <string name="enter_text_here">enter text with #hashtag here</string>
+    <string name="set_text">Set text</string>
+    <string name="text_will_be_pasted_here">text will be pasted here</string>
+    <string name="get_all_hashtags">get all hashtags</string>
+</resources>
