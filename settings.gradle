@@ -1,1 +1,1 @@
-include ':sample_app', ':hashtaghelper_library'
+include ':sample_app', ':hashtag-helper'
