@@ -89,23 +89,28 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     }
 
     public void handle(TextView textView){
-        mTextView = textView;
-        mTextView.addTextChangedListener(mTextWatcher);
+        if(mTextView == null){
+            mTextView = textView;
+            mTextView.addTextChangedListener(mTextWatcher);
 
-        // in order to use spannable we have to set buffer type
-        mTextView.setText(mTextView.getText(), TextView.BufferType.SPANNABLE);
+            // in order to use spannable we have to set buffer type
+            mTextView.setText(mTextView.getText(), TextView.BufferType.SPANNABLE);
 
-        if(mOnHashTagClickListener != null){
-            // we need to set this in order to get onClick event
-            mTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            if(mOnHashTagClickListener != null){
+                // we need to set this in order to get onClick event
+                mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-            // after onClick clicked text become highlighted
-            mTextView.setHighlightColor(Color.TRANSPARENT);
+                // after onClick clicked text become highlighted
+                mTextView.setHighlightColor(Color.TRANSPARENT);
+            } else {
+                // hash tags are not clickable, no need to change these parameters
+            }
+
+            setColorsToAllHashTags(mTextView.getText());
         } else {
-            // hash tags are not clickable, no need to change these parameters
+            throw new RuntimeException("TextView is not null. You need to create a unique HashTagHelper for every TextView");
         }
 
-        setColorsToAllHashTags(mTextView.getText());
     }
 
     private void eraseAndColorizeAllText(CharSequence text) {

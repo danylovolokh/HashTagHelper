@@ -43,11 +43,12 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements Hash
                 '_',
                 '$'
         };
-        // if you set additional symbols not only letters and digits will be a valid symbols for hashtag
+        // If you set additional symbols not only letters and digits will be a valid symbols for hashtag
         // Example: "hash_tag_with_underscore_and$dolar$sign$is$also$valid_hashtag"
         mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimary), this, additionalSymbols);
         mTextHashTagHelper.handle(mHashTagText);
 
+        // Here we don't specify additionalSymbols. It means that in EditText only letters and digits will be valid symbols
         mEditTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), null);
         mEditTextHashTagHelper.handle(mEditTextView);
     }
