@@ -26,6 +26,16 @@ import java.util.Set;
  */
 public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashTagClickListener {
 
+    /**
+     * If this is not null then  all of the symbols in the List will be considered as valid symbols of hashtag
+     * For example :
+     * mAdditionalHashTagChars = {'$','_','-'}
+     * it means that hashtag: "#this_is_hashtag-with$dollar-sign" will be highlighted.
+     *
+     * Note: if mAdditionalHashTagChars would be "null" only "#this" would be highlighted
+     *
+     */
+    private final List<Character> mAdditionalHashTagChars;
     private TextView mTextView;
     private int mHashTagWordColor;
 
@@ -36,7 +46,11 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         private Creator(){}
 
         public static HashTagHelper create(int color, OnHashTagClickListener listener){
-            return new HashTagHelper(color, listener);
+            return new HashTagHelper(color, listener, null);
+        }
+
+        public static HashTagHelper create(int color, OnHashTagClickListener listener, char... additionalHashTagChars){
+            return new HashTagHelper(color, listener, additionalHashTagChars);
         }
 
     }
@@ -62,9 +76,16 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         }
     };
 
-    private HashTagHelper(int color, OnHashTagClickListener listener) {
+    private HashTagHelper(int color, OnHashTagClickListener listener, char... additionalHashTagCharacters) {
         mHashTagWordColor = color;
         mOnHashTagClickListener = listener;
+        mAdditionalHashTagChars = new ArrayList<>();
+
+        if(additionalHashTagCharacters != null){
+            for(char additionalChar : additionalHashTagCharacters){
+                mAdditionalHashTagChars.add(additionalChar);
+            }
+        }
     }
 
     public void handle(TextView textView){
@@ -106,11 +127,11 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         int index = 0;
         while (index < text.length()-  1){
             char sign = text.charAt(index);
-            int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextNotLetterDigitChar then index will be incremented by 1
+            int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextValidHashTagChar then index will be incremented by 1
             if(sign == '#'){
                 startIndexOfNextHashSign = index;
 
-                nextNotLetterDigitCharIndex = findNextNotLetterDigitChar(text, startIndexOfNextHashSign);
+                nextNotLetterDigitCharIndex = findNextValidHashTagChar(text, startIndexOfNextHashSign);
 
                 setColorForHashTagToTheEnd(startIndexOfNextHashSign, nextNotLetterDigitCharIndex);
             }
@@ -119,15 +140,15 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         }
     }
 
-    private int findNextNotLetterDigitChar(CharSequence text, int start) {
+    private int findNextValidHashTagChar(CharSequence text, int start) {
 
         int nonLetterDigitCharIndex = -1; // skip first sign '#"
         for (int index = start + 1; index < text.length(); index++) {
 
             char sign = text.charAt(index);
 
-            boolean isLetterOrDigit = Character.isLetterOrDigit(sign);
-            if (!isLetterOrDigit) {
+            boolean isValidSign = Character.isLetterOrDigit(sign) || mAdditionalHashTagChars.contains(sign);
+            if (!isValidSign) {
                 nonLetterDigitCharIndex = index;
                 break;
             }

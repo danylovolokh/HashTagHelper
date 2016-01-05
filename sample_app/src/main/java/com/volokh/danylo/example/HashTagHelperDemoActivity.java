@@ -39,7 +39,13 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements Hash
         Button getAllHashTagsBtn = (Button) findViewById(R.id.get_all_hashtags_btn);
         getAllHashTagsBtn.setOnClickListener(this);
 
-        mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimary), this);
+        char[] additionalSymbols = new char[]{
+                '_',
+                '$'
+        };
+        // if you set additional symbols not only letters and digits will be a valid symbols for hashtag
+        // Example: "hash_tag_with_underscore_and$dolar$sign$is$also$valid_hashtag"
+        mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimary), this, additionalSymbols);
         mTextHashTagHelper.handle(mHashTagText);
 
         mEditTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), null);
