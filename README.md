@@ -17,7 +17,7 @@ Add this snippet to your module build.gradle file:
 
 ```
 dependencies {
-    compile 'com.github.danylo2006:hashtag-helper:1.0.0'
+    compile 'com.github.danylo2006:hashtag-helper:1.1.0'
 }
 ```
 Getting click events and highligthing hashtags.
@@ -47,6 +47,19 @@ Just set "null" instead of HashTagHelper.OnHashTagClickListener;
 ```
 mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimary), null);
 mTextHashTagHelper.handle(mHashTagText);
+```
+By default only digits and letters are valid symbols for hashtag
+To add support of custom symbols like '_' or '-' you need to specify another parameter when creating HashTagHelper
+```
+char[] additionalSymbols = new char[]{
+                '_',
+                '$'
+        };
+// If you set additional symbols not only letters and digits will be a valid symbols for hashtag
+// Example: "hash_tag_with_underscore_and$dolar$sign$is$also$valid_hashtag"
+mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimary), null, additionalSymbols);
+mTextHashTagHelper.handle(mHashTagText);
+
 ```
 To get all hashtags from text.
 ```
