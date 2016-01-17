@@ -17,7 +17,7 @@ Add this snippet to your module build.gradle file:
 
 ```
 dependencies {
-    compile 'com.github.danylo2006:hashtag-helper:1.1.0'
+    compile 'com.github.danylovolokh:hashtag-helper:1.1.0'
 }
 ```
 Getting click events and highligthing hashtags.
