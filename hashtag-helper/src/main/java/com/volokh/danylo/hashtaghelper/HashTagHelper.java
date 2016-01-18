@@ -181,22 +181,26 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         s.setSpan(span, startIndex, nextNotLetterDigitCharIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
-    public List<String> getAllHashTags() {
+    public List<String> getAllHashTags(boolean withHashes) {
 
         String text = mTextView.getText().toString();
-        Spannable spannable = (Spannable) mTextView.getText() ;
+        Spannable spannable = (Spannable) mTextView.getText();
 
         // use set to exclude duplicates
         Set<String> hashTags = new LinkedHashSet<>();
 
-        for(CharacterStyle span : spannable.getSpans(0, text.length(), CharacterStyle.class)){
+        for (CharacterStyle span : spannable.getSpans(0, text.length(), CharacterStyle.class)) {
             hashTags.add(
-                    text.substring(
-                            spannable.getSpanStart(span) + 1/*skip "#" sign*/,
-                            spannable.getSpanEnd(span)));
+                    text.substring(!withHashes ? spannable.getSpanStart(span) + 1/*skip "#" sign*/
+                                           : spannable.getSpanStart(span),
+                                   spannable.getSpanEnd(span)));
         }
 
         return new ArrayList<>(hashTags);
+    }
+
+    public List<String> getAllHashTags() {
+        return getAllHashTags(false);
     }
 
     @Override
