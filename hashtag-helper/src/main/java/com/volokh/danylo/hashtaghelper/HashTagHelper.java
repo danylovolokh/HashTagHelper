@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +25,7 @@ import java.util.Set;
  * #hashtagendsifitfindsnotletterornotdigitsignlike_thisIsNotHighlithedArea
  *
  */
-public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashTagClickListener {
+public final class HashTagHelper implements OnHashTagClickListener {
 
     /**
      * If this is not null then  all of the symbols in the List will be considered as valid symbols of hashtag
@@ -38,6 +39,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     private final List<Character> mAdditionalHashTagChars;
     private TextView mTextView;
     private int mHashTagWordColor;
+    private List<Character> mStartChars;
 
     private OnHashTagClickListener mOnHashTagClickListener;
 
@@ -46,17 +48,18 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         private Creator(){}
 
         public static HashTagHelper create(int color, OnHashTagClickListener listener){
-            return new HashTagHelper(color, listener, null);
+            return new HashTagHelper(color, listener,  Arrays.asList('#'), null);
+        }
+        public static HashTagHelper create(int color, OnHashTagClickListener listener,List<Character> startChars){
+            return new HashTagHelper(color, listener, startChars, null);
         }
 
         public static HashTagHelper create(int color, OnHashTagClickListener listener, char... additionalHashTagChars){
-            return new HashTagHelper(color, listener, additionalHashTagChars);
+            return new HashTagHelper(color, listener, Arrays.asList('#'), additionalHashTagChars);
         }
-
-    }
-
-    public interface OnHashTagClickListener{
-        void onHashTagClicked(String hashTag);
+        public static HashTagHelper create(int color, OnHashTagClickListener listener,List<Character> startChar, char... additionalHashTagChars){
+            return new HashTagHelper(color, listener, startChar, additionalHashTagChars);
+        }
     }
 
     private final TextWatcher mTextWatcher = new TextWatcher() {
@@ -76,10 +79,11 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         }
     };
 
-    private HashTagHelper(int color, OnHashTagClickListener listener, char... additionalHashTagCharacters) {
+    private HashTagHelper(int color, OnHashTagClickListener listener,List<Character> startChars, char... additionalHashTagCharacters) {
         mHashTagWordColor = color;
         mOnHashTagClickListener = listener;
         mAdditionalHashTagChars = new ArrayList<>();
+        mStartChars = startChars;
 
         if(additionalHashTagCharacters != null){
             for(char additionalChar : additionalHashTagCharacters){
@@ -133,7 +137,8 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         while (index < text.length()-  1){
             char sign = text.charAt(index);
             int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextValidHashTagChar then index will be incremented by 1
-            if(sign == '#'){
+
+            if(containsOne(mStartChars,sign)){
                 startIndexOfNextHashSign = index;
 
                 nextNotLetterDigitCharIndex = findNextValidHashTagChar(text, startIndexOfNextHashSign);
@@ -203,6 +208,13 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         return getAllHashTags(false);
     }
 
+    private boolean containsOne(List<Character> charsList,char targetChar){
+        for(char c : charsList){
+            if(targetChar == c)
+                return true;
+        }
+        return false;
+    }
     @Override
     public void onHashTagClicked(String hashTag) {
         mOnHashTagClickListener.onHashTagClicked(hashTag);

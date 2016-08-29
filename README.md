@@ -69,8 +69,20 @@ List<String> allHashTags = mTextHashTagHelper.getAllHashTags(true);
 // get all hashtags without "#", example: "blueeyes"
 List<String> allHashTags = mTextHashTagHelper.getAllHashTags(false);
 ```
+
+To add custom starting tags (eg : '@','$' etc...)
+```
+List<Character> startingChars = new ArrayList<>();
+startingChars.add('@');
+startingChars.add('#');
+startingChars.add('-');
+mHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), null, startingChars);
+
+//Or you can simply use arrays helper like this one
+mHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), null, Arrays.asList('#','@','-'));
+```
 #Demo
-![alt tag](https://cloud.githubusercontent.com/assets/2686355/11998408/e6aa1f62-aaa6-11e5-911a-c598b6853862.gif) ![alt tag](https://cloud.githubusercontent.com/assets/2686355/11998409/e6aa3ed4-aaa6-11e5-9797-100a024659cc.gif)
+![alt tag](https://cloud.githubusercontent.com/assets/2686355/11998408/e6aa1f62-aaa6-11e5-911a-c598b6853862.gif) ![alt tag](https://cloud.githubusercontent.com/assets/2686355/11998409/e6aa3ed4-aaa6-11e5-9797-100a024659cc.gif) ![new version](https://cloud.githubusercontent.com/assets/8886687/18061116/bbd3e1e8-6e36-11e6-9d4d-376b1399bd7b.jpg)
 
 # License
 
