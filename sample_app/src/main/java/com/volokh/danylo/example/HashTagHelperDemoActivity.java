@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 import com.volokh.danylo.hashtaghelper.OnHashTagClickListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,11 +49,15 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements OnHa
         };
         // If you set additional symbols not only letters and digits will be a valid symbols for hashtag
         // Example: "hash_tag_with_underscore_and$dolar$sign$is$also$valid_hashtag"
-        mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(android.R.color.holo_red_light), this, Arrays.asList('#','@','-'), additionalSymbols);
+        mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), this, Arrays.asList('#','@','-'), additionalSymbols);
         mTextHashTagHelper.handle(mHashTagText);
 
         // Here we don't specify additionalSymbols. It means that in EditText only letters and digits will be valid symbols
-        mEditTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), null, Arrays.asList('#','@','%'));
+        List<Character> startingChars = new ArrayList<>();
+        startingChars.add('@');
+        startingChars.add('#');
+        startingChars.add('-');
+        mEditTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), null, Arrays.asList('#','@','-'));
         mEditTextHashTagHelper.handle(mEditTextView);
     }
 
