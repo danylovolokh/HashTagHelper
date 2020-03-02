@@ -1,6 +1,6 @@
 package com.volokh.danylo.hashtaghelper;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
