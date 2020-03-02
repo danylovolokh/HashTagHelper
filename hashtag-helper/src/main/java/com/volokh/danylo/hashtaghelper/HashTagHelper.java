@@ -149,7 +149,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
 
         Spannable spannable = ((Spannable) mTextView.getText());
 
-        CharacterStyle[] spans = spannable.getSpans(0, text.length(), CharacterStyle.class);
+        CharacterStyle[] spans = spannable.getSpans(0, text.length(), ClickableForegroundColorSpan.class);
         for (CharacterStyle span : spans) {
             spannable.removeSpan(span);
         }
@@ -221,7 +221,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         // use set to exclude duplicates
         Set<String> hashTags = new LinkedHashSet<>();
 
-        for (CharacterStyle span : spannable.getSpans(0, text.length(), CharacterStyle.class)) {
+        for (CharacterStyle span : spannable.getSpans(0, text.length(), ClickableForegroundColorSpan.class)) {
             hashTags.add(
                     text.substring(!withHashes ? spannable.getSpanStart(span) + 1/*skip "#" sign*/
                                     : spannable.getSpanStart(span),
