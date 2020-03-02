@@ -45,7 +45,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
      * For example:
      * mStartChars = {'@','%'}
      * it means that all words starting with these symbols will be highlighted.
-     *
+     * <p>
      * Note: if mStartChars is null, words started with '#' symbol will be highlighted
      */
     private final List<Character> mStartChars;
@@ -78,7 +78,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     }
 
     public interface OnHashTagClickListener {
-        void onHashTagClicked(String hashTag);
+        void onHashTagClicked(Character initialChar, String hashTag);
     }
 
     private final TextWatcher mTextWatcher = new TextWatcher() {
@@ -236,7 +236,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     }
 
     @Override
-    public void onHashTagClicked(String hashTag) {
-        mOnHashTagClickListener.onHashTagClicked(hashTag);
+    public void onHashTagClicked(Character initialChar, String hashTag) {
+        mOnHashTagClickListener.onHashTagClicked(initialChar, hashTag);
     }
 }

@@ -69,7 +69,7 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements Hash
     }
 
     @Override
-    public void onHashTagClicked(String hashTag) {
+    public void onHashTagClicked(Character initialChar, String hashTag) {
         Log.v(TAG, "onHashTagClicked [" + hashTag + "]");
         if (mToast != null) {
             mToast.cancel();
