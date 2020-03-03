@@ -53,7 +53,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     /**
      * Character style needs to separate different spans in the text
      */
-    private Class<? extends ClickableForegroundColorSpan> mCharacterStyle;
+    private Class<? extends CharacterStyle> mCharacterStyle;
 
     private OnHashTagClickListener mOnHashTagClickListener;
 
@@ -125,7 +125,6 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         } else {
             mCharacterStyle = characterStyle;
         }
-        mCharacterStyle = characterStyle;
         mHashTagWordColor = color;
         mOnHashTagClickListener = listener;
         mAdditionalHashTagChars = new ArrayList<>();
@@ -184,8 +183,9 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         int index = 0;
         while (index < text.length() - 1) {
             char sign = text.charAt(index);
+            char nextSign = text.charAt(index + 1);
             int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextValidHashTagChar then index will be incremented by 1
-            if (mStartChars.contains(sign)) {
+            if (mStartChars.contains(sign) && !mStartChars.contains(nextSign)) {
                 startIndexOfNextHashSign = index;
 
                 nextNotLetterDigitCharIndex = findNextValidHashTagChar(text, startIndexOfNextHashSign);
@@ -204,7 +204,8 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
 
             char sign = text.charAt(index);
 
-            boolean isValidSign = Character.isLetterOrDigit(sign) || mAdditionalHashTagChars.contains(sign);
+            boolean isValidSign = (Character.isLetterOrDigit(sign) || mAdditionalHashTagChars.contains(sign))
+                    && !mStartChars.contains(sign);
             if (!isValidSign) {
                 nonLetterDigitCharIndex = index;
                 break;
