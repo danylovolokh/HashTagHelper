@@ -177,18 +177,18 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     }
 
     private void setColorsToAllHashTags(CharSequence text) {
-
+        String trimmedText = text.toString().trim();
         int startIndexOfNextHashSign;
 
         int index = 0;
-        while (index < text.length() - 1) {
-            char sign = text.charAt(index);
-            char nextSign = text.charAt(index + 1);
+        while (index < trimmedText.length() - 1) {
+            char sign = trimmedText.charAt(index);
+            char nextSign = trimmedText.charAt(index + 1);
             int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextValidHashTagChar then index will be incremented by 1
             if (mStartChars.contains(sign) && !mStartChars.contains(nextSign)) {
                 startIndexOfNextHashSign = index;
 
-                nextNotLetterDigitCharIndex = findNextValidHashTagChar(text, startIndexOfNextHashSign);
+                nextNotLetterDigitCharIndex = findNextValidHashTagChar(trimmedText, startIndexOfNextHashSign);
 
                 setColorForHashTagToTheEnd(startIndexOfNextHashSign, nextNotLetterDigitCharIndex);
             }
