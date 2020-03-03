@@ -28,8 +28,6 @@ import java.util.Set;
  */
 public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashTagClickListener {
 
-    private final Character DEFAULT_HASHTAG_SYMBOL = '#';
-
     /**
      * If this is not null then  all of the symbols in the List will be considered as valid symbols of hashtag
      * For example :
@@ -52,6 +50,11 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     private TextView mTextView;
     private int mHashTagWordColor;
 
+    /**
+     * Character style needs to separate different spans in the text
+     */
+    private Class<? extends ClickableForegroundColorSpan> mCharacterStyle;
+
     private OnHashTagClickListener mOnHashTagClickListener;
 
     public static final class Creator {
@@ -60,19 +63,30 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         }
 
         public static HashTagHelper create(int color, OnHashTagClickListener listener) {
-            return new HashTagHelper(color, listener, null, null);
+            return new HashTagHelper(color, listener, null, null, null);
         }
 
         public static HashTagHelper create(int color, OnHashTagClickListener listener, @NonNull List<Character> additionalHashTagChars) {
-            return new HashTagHelper(color, listener, additionalHashTagChars, null);
+            return new HashTagHelper(color, listener, additionalHashTagChars, null, null);
         }
 
         public static HashTagHelper create(
                 int color,
                 OnHashTagClickListener listener,
                 List<Character> additionalHashTagChars,
-                @NonNull List<Character> startChars) {
-            return new HashTagHelper(color, listener, additionalHashTagChars, startChars);
+                @NonNull List<Character> startChars
+        ) {
+            return new HashTagHelper(color, listener, additionalHashTagChars, startChars, null);
+        }
+
+        public static HashTagHelper create(
+                int color,
+                OnHashTagClickListener listener,
+                List<Character> additionalHashTagChars,
+                List<Character> startChars,
+                @NonNull Class<? extends ClickableForegroundColorSpan> characterStyle
+        ) {
+            return new HashTagHelper(color, listener, additionalHashTagChars, startChars, characterStyle);
         }
 
     }
@@ -102,8 +116,16 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
             int color,
             OnHashTagClickListener listener,
             @Nullable List<Character> additionalHashTagChars,
-            @Nullable List<Character> startChars
+            @Nullable List<Character> startChars,
+            @Nullable Class<? extends ClickableForegroundColorSpan> characterStyle
     ) {
+
+        if (characterStyle == null) {
+            mCharacterStyle = ClickableForegroundColorSpan.class;
+        } else {
+            mCharacterStyle = characterStyle;
+        }
+        mCharacterStyle = characterStyle;
         mHashTagWordColor = color;
         mOnHashTagClickListener = listener;
         mAdditionalHashTagChars = new ArrayList<>();
@@ -115,8 +137,6 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
 
         if (startChars != null) {
             mStartChars.addAll(startChars);
-        } else {
-            mStartChars.add(DEFAULT_HASHTAG_SYMBOL);
         }
     }
 
@@ -149,7 +169,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
 
         Spannable spannable = ((Spannable) mTextView.getText());
 
-        CharacterStyle[] spans = spannable.getSpans(0, text.length(), ClickableForegroundColorSpan.class);
+        CharacterStyle[] spans = spannable.getSpans(0, text.length(), mCharacterStyle);
         for (CharacterStyle span : spans) {
             spannable.removeSpan(span);
         }
@@ -221,7 +241,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         // use set to exclude duplicates
         Set<String> hashTags = new LinkedHashSet<>();
 
-        for (CharacterStyle span : spannable.getSpans(0, text.length(), ClickableForegroundColorSpan.class)) {
+        for (CharacterStyle span : spannable.getSpans(0, text.length(), mCharacterStyle)) {
             hashTags.add(
                     text.substring(!withHashes ? spannable.getSpanStart(span) + 1/*skip "#" sign*/
                                     : spannable.getSpanStart(span),
