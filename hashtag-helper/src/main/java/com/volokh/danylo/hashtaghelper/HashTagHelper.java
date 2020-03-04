@@ -28,6 +28,8 @@ import java.util.Set;
  */
 public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashTagClickListener {
 
+    private static final Character NEW_LINE = '\n';
+
     /**
      * If this is not null then  all of the symbols in the List will be considered as valid symbols of hashtag
      * For example :
@@ -185,7 +187,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
             char sign = trimmedText.charAt(index);
             char nextSign = trimmedText.charAt(index + 1);
             int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextValidHashTagChar then index will be incremented by 1
-            if (mStartChars.contains(sign) && !mStartChars.contains(nextSign)) {
+            if (mStartChars.contains(sign) && !mStartChars.contains(nextSign) && nextSign != NEW_LINE) {
                 startIndexOfNextHashSign = index;
 
                 nextNotLetterDigitCharIndex = findNextValidHashTagChar(trimmedText, startIndexOfNextHashSign);
