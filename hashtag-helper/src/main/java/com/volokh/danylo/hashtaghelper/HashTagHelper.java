@@ -29,6 +29,8 @@ import java.util.Set;
 public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashTagClickListener {
 
     private static final Character NEW_LINE = '\n';
+    private static final Character CARRIAGE_RETURN = '\r';
+    private static final Character SPACE = ' ';
 
     /**
      * If this is not null then  all of the symbols in the List will be considered as valid symbols of hashtag
@@ -58,6 +60,8 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
     private Class<? extends CharacterStyle> mCharacterStyle;
 
     private OnHashTagClickListener mOnHashTagClickListener;
+
+    private final ArrayList<Character> mForbiddenCharacters = new ArrayList<>();
 
     public static final class Creator {
 
@@ -122,6 +126,8 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
             @Nullable Class<? extends ClickableForegroundColorSpan> characterStyle
     ) {
 
+        addForbiddenCharactersToList();
+
         if (characterStyle == null) {
             mCharacterStyle = ClickableForegroundColorSpan.class;
         } else {
@@ -139,6 +145,12 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         if (startChars != null) {
             mStartChars.addAll(startChars);
         }
+    }
+
+    private void addForbiddenCharactersToList() {
+        mForbiddenCharacters.add(NEW_LINE);
+        mForbiddenCharacters.add(SPACE);
+        mForbiddenCharacters.add(CARRIAGE_RETURN);
     }
 
     public void handle(TextView textView) {
@@ -187,7 +199,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
             char sign = trimmedText.charAt(index);
             char nextSign = trimmedText.charAt(index + 1);
             int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextValidHashTagChar then index will be incremented by 1
-            if (mStartChars.contains(sign) && !mStartChars.contains(nextSign) && nextSign != NEW_LINE) {
+            if (mStartChars.contains(sign) && !mStartChars.contains(nextSign) && !mForbiddenCharacters.contains(nextSign)) {
                 startIndexOfNextHashSign = index;
 
                 nextNotLetterDigitCharIndex = findNextValidHashTagChar(trimmedText, startIndexOfNextHashSign);
