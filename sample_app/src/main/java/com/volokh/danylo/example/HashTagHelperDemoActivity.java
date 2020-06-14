@@ -1,6 +1,5 @@
 package com.volokh.danylo.example;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,8 +7,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HashTagHelperDemoActivity extends AppCompatActivity implements HashTagHelper.OnHashTagClickListener, View.OnClickListener {
@@ -39,24 +41,37 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements Hash
         Button getAllHashTagsBtn = (Button) findViewById(R.id.get_all_hashtags_btn);
         getAllHashTagsBtn.setOnClickListener(this);
 
-        char[] additionalSymbols = new char[]{
-                '_',
-                '$'
-        };
+        ArrayList<Character> additionalSymbols = new ArrayList<>();
+        additionalSymbols.add('_');
+        additionalSymbols.add('$');
+
+        ArrayList<Character> startChars = new ArrayList<>();
+        startChars.add('@');
+        startChars.add('%');
+        startChars.add('#');
+
         // If you set additional symbols not only letters and digits will be a valid symbols for hashtag
         // Example: "hash_tag_with_underscore_and$dolar$sign$is$also$valid_hashtag"
-        mTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimary), this, additionalSymbols);
+        mTextHashTagHelper = HashTagHelper.Creator.create(
+                getResources().getColor(R.color.colorPrimary),
+                this,
+                additionalSymbols,
+                startChars);
         mTextHashTagHelper.handle(mHashTagText);
 
         // Here we don't specify additionalSymbols. It means that in EditText only letters and digits will be valid symbols
-        mEditTextHashTagHelper = HashTagHelper.Creator.create(getResources().getColor(R.color.colorPrimaryDark), null);
+        mEditTextHashTagHelper = HashTagHelper.Creator.create(
+                getResources().getColor(R.color.colorPrimaryDark),
+                null,
+                null,
+                startChars);
         mEditTextHashTagHelper.handle(mEditTextView);
     }
 
     @Override
-    public void onHashTagClicked(String hashTag) {
+    public void onHashTagClicked(Character initialChar, String hashTag) {
         Log.v(TAG, "onHashTagClicked [" + hashTag + "]");
-        if(mToast != null){
+        if (mToast != null) {
             mToast.cancel();
         }
         mToast = Toast.makeText(HashTagHelperDemoActivity.this, hashTag, Toast.LENGTH_SHORT);
@@ -65,7 +80,7 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements Hash
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.get_entered_text_btn:
                 mHashTagText.setText(mEditTextView.getText());
                 break;

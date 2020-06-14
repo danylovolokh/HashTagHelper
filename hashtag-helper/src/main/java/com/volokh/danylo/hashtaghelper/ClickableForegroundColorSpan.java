@@ -1,6 +1,7 @@
 package com.volokh.danylo.hashtaghelper;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
+
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
@@ -11,7 +12,7 @@ import android.widget.TextView;
  * Created by danylo.volokh on 12/22/2015.
  * This class is a combination of {@link android.text.style.ForegroundColorSpan}
  * and {@link ClickableSpan}.
- *
+ * <p>
  * You can set a color of this span plus set a click listener
  */
 public class ClickableForegroundColorSpan extends ClickableSpan {
@@ -19,7 +20,11 @@ public class ClickableForegroundColorSpan extends ClickableSpan {
     private OnHashTagClickListener mOnHashTagClickListener;
 
     public interface OnHashTagClickListener {
-        void onHashTagClicked(String hashTag);
+        /**
+         * @param initialChar is a {@link Character} which helps to determine click event
+         * @param hashTag     simple {@link String} after initialChar
+         */
+        void onHashTagClicked(Character initialChar, String hashTag);
     }
 
     private final int mColor;
@@ -46,6 +51,10 @@ public class ClickableForegroundColorSpan extends ClickableSpan {
         int start = s.getSpanStart(this);
         int end = s.getSpanEnd(this);
 
-        mOnHashTagClickListener.onHashTagClicked(text.subSequence(start + 1/*skip "#" sign*/, end).toString());
+        mOnHashTagClickListener
+                .onHashTagClicked(
+                        text.charAt(start),
+                        text.subSequence(start + 1/*skip "#" sign*/, end).toString()
+                );
     }
 }
