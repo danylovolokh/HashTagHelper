@@ -70,6 +70,7 @@ List<String> allHashTags = mTextHashTagHelper.getAllHashTags(true);
 List<String> allHashTags = mTextHashTagHelper.getAllHashTags(false);
 ```
 #Demo
+```
 ![alt tag](https://cloud.githubusercontent.com/assets/2686355/11998408/e6aa1f62-aaa6-11e5-911a-c598b6853862.gif) ![alt tag](https://cloud.githubusercontent.com/assets/2686355/11998409/e6aa3ed4-aaa6-11e5-9797-100a024659cc.gif)
 
 # License
