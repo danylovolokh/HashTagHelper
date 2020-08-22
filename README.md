@@ -1,4 +1,4 @@
-# HashTagHelper
+# HashTagHelper - Android HashTag
 This is a library designed for highlighting hashtags ("#example") and catching click on them.
 
 [![Android_weekly](https://img.shields.io/badge/Android%20Weekly-HashTagHelper-green.svg)](http://androidweekly.net/issues/issue-185)
@@ -17,7 +17,7 @@ Add this snippet to your module build.gradle file:
 
 ```
 dependencies {
-    compile 'com.github.danylovolokh:hashtag-helper:1.1.0'
+    implementation 'com.github.immujahidkhan:HashTagHelper:1.1.1'
 }
 ```
 Getting click events and highligthing hashtags.
