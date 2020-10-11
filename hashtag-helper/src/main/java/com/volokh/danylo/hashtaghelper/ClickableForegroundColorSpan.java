@@ -19,8 +19,8 @@ public class ClickableForegroundColorSpan extends ClickableSpan {
 
     private OnHashTagClickListener mOnHashTagClickListener;
 
-    public interface OnHashTagClickListener {
-        void onHashTagClicked(String hashTag);
+    public interface OnHashTagClickListener<T> {
+        void onHashTagClicked(T hashTag);
     }
 
     private final int mColor;
