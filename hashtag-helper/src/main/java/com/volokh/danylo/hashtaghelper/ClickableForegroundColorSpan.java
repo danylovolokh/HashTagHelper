@@ -1,11 +1,12 @@
 package com.volokh.danylo.hashtaghelper;
 
-import android.support.annotation.ColorInt;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
 
 /**
  * Created by danylo.volokh on 12/22/2015.
@@ -18,8 +19,8 @@ public class ClickableForegroundColorSpan extends ClickableSpan {
 
     private OnHashTagClickListener mOnHashTagClickListener;
 
-    public interface OnHashTagClickListener {
-        void onHashTagClicked(String hashTag);
+    public interface OnHashTagClickListener<T> {
+        void onHashTagClicked(T hashTag);
     }
 
     private final int mColor;

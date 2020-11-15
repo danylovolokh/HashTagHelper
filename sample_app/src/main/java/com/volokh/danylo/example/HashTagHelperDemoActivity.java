@@ -1,12 +1,13 @@
 package com.volokh.danylo.example;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
@@ -56,7 +57,7 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements Hash
     @Override
     public void onHashTagClicked(String hashTag) {
         Log.v(TAG, "onHashTagClicked [" + hashTag + "]");
-        if(mToast != null){
+        if (mToast != null) {
             mToast.cancel();
         }
         mToast = Toast.makeText(HashTagHelperDemoActivity.this, hashTag, Toast.LENGTH_SHORT);
@@ -65,7 +66,7 @@ public class HashTagHelperDemoActivity extends AppCompatActivity implements Hash
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.get_entered_text_btn:
                 mHashTagText.setText(mEditTextView.getText());
                 break;

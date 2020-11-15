@@ -17,12 +17,11 @@ import java.util.Set;
 /**
  * This is a helper class that should be used with {@link android.widget.EditText} or {@link android.widget.TextView}
  * In order to have hash-tagged words highlighted. It also provides a click listeners for every hashtag
- *
+ * <p>
  * Example :
  * #ThisIsHashTagWord
  * #ThisIsFirst#ThisIsSecondHashTag
  * #hashtagendsifitfindsnotletterornotdigitsignlike_thisIsNotHighlithedArea
- *
  */
 public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashTagClickListener {
 
@@ -31,9 +30,8 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
      * For example :
      * mAdditionalHashTagChars = {'$','_','-'}
      * it means that hashtag: "#this_is_hashtag-with$dollar-sign" will be highlighted.
-     *
+     * <p>
      * Note: if mAdditionalHashTagChars would be "null" only "#this" would be highlighted
-     *
      */
     private final List<Character> mAdditionalHashTagChars;
     private TextView mTextView;
@@ -41,22 +39,24 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
 
     private OnHashTagClickListener mOnHashTagClickListener;
 
-    public static final class Creator{
 
-        private Creator(){}
+    public static final class Creator {
 
-        public static HashTagHelper create(int color, OnHashTagClickListener listener){
+        private Creator() {
+        }
+
+        public static HashTagHelper create(int color, OnHashTagClickListener listener) {
             return new HashTagHelper(color, listener, null);
         }
 
-        public static HashTagHelper create(int color, OnHashTagClickListener listener, char... additionalHashTagChars){
+        public static HashTagHelper create(int color, OnHashTagClickListener listener, char... additionalHashTagChars) {
             return new HashTagHelper(color, listener, additionalHashTagChars);
         }
 
     }
 
-    public interface OnHashTagClickListener{
-        void onHashTagClicked(String hashTag);
+    public interface OnHashTagClickListener<T> {
+        void onHashTagClicked(T hashTag);
     }
 
     private final TextWatcher mTextWatcher = new TextWatcher() {
@@ -81,22 +81,22 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         mOnHashTagClickListener = listener;
         mAdditionalHashTagChars = new ArrayList<>();
 
-        if(additionalHashTagCharacters != null){
-            for(char additionalChar : additionalHashTagCharacters){
+        if (additionalHashTagCharacters != null) {
+            for (char additionalChar : additionalHashTagCharacters) {
                 mAdditionalHashTagChars.add(additionalChar);
             }
         }
     }
 
-    public void handle(TextView textView){
-        if(mTextView == null){
+    public void handle(TextView textView) {
+        if (mTextView == null) {
             mTextView = textView;
             mTextView.addTextChangedListener(mTextWatcher);
 
             // in order to use spannable we have to set buffer type
             mTextView.setText(mTextView.getText(), TextView.BufferType.SPANNABLE);
 
-            if(mOnHashTagClickListener != null){
+            if (mOnHashTagClickListener != null) {
                 // we need to set this in order to get onClick event
                 mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -130,10 +130,10 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         int startIndexOfNextHashSign;
 
         int index = 0;
-        while (index < text.length()-  1){
+        while (index < text.length() - 1) {
             char sign = text.charAt(index);
             int nextNotLetterDigitCharIndex = index + 1; // we assume it is next. if if was not changed by findNextValidHashTagChar then index will be incremented by 1
-            if(sign == '#'){
+            if (sign == '#') {
                 startIndexOfNextHashSign = index;
 
                 nextNotLetterDigitCharIndex = findNextValidHashTagChar(text, startIndexOfNextHashSign);
@@ -171,7 +171,7 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
 
         CharacterStyle span;
 
-        if(mOnHashTagClickListener != null){
+        if (mOnHashTagClickListener != null) {
             span = new ClickableForegroundColorSpan(mHashTagWordColor, this);
         } else {
             // no need for clickable span because it is messing with selection when click
@@ -192,8 +192,8 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         for (CharacterStyle span : spannable.getSpans(0, text.length(), CharacterStyle.class)) {
             hashTags.add(
                     text.substring(!withHashes ? spannable.getSpanStart(span) + 1/*skip "#" sign*/
-                                           : spannable.getSpanStart(span),
-                                   spannable.getSpanEnd(span)));
+                                    : spannable.getSpanStart(span),
+                            spannable.getSpanEnd(span)));
         }
 
         return new ArrayList<>(hashTags);
@@ -203,8 +203,9 @@ public final class HashTagHelper implements ClickableForegroundColorSpan.OnHashT
         return getAllHashTags(false);
     }
 
+
     @Override
-    public void onHashTagClicked(String hashTag) {
+    public void onHashTagClicked(Object hashTag) {
         mOnHashTagClickListener.onHashTagClicked(hashTag);
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HashTagHelper.iml" filepath="$PROJECT_DIR$/.idea/modules/HashTagHelper.iml" group="HashTagHelper" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hashtag-helper/hashtag-helper.iml" filepath="$PROJECT_DIR$/.idea/modules/hashtag-helper/hashtag-helper.iml" group="HashTagHelper/hashtag-helper" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample_app/sample_app.iml" filepath="$PROJECT_DIR$/.idea/modules/sample_app/sample_app.iml" group="HashTagHelper/sample_app" />
+    </modules>
+  </component>
+</project>
